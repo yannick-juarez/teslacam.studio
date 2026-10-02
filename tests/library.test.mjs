@@ -52,6 +52,7 @@ test('dashcam icon tap is displayed as a manual save', async () => {
   ])
   assert.equal(event.category, 'SavedClips')
   assert.equal(reasonLabel(event.metadata.reason), 'Sauvegarde manuelle')
+  assert.equal(reasonLabel(event.metadata.reason, 'en'), 'Manual save')
 })
 
 test('event camera focus chooses the available lateral view or falls back to front', async () => {

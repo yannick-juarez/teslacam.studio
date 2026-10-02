@@ -45,3 +45,35 @@ npm test
 npm run lint
 npm run build
 ```
+
+## English
+
+TeslaCam Studio is a local viewer for Tesla Sentry Mode, saved Dashcam, and recent recordings. It groups clips by date, reads `event.json`, and plays synchronized cameras on a shared timeline. The interface starts in French; choose **EN** in the header to switch to English. Your language and theme choices persist on this device.
+
+### Get started
+
+Requires Node.js 20.19+ (or 22.12+) and npm:
+
+```sh
+npm install
+npm run dev
+```
+
+Open the URL shown by Vite. Connect your Tesla USB drive, click **Select the TeslaCam folder**, and choose its `TeslaCam` directory. You can also select `SentryClips`, `RecentClips`, or an individual event folder. The browser asks you to select the folder each time; it cannot access your drive without your permission. The sample `./TeslaCam` folder is ignored by Git.
+
+Choose a clip in the library to open the player at its event time (or at the start when no event time is available). Switch between front-and-mirrors, grid, and event-camera layouts. Click a camera to enlarge it; click again or press `Escape` to return to the layout. Click **All clips** to return to the library. Use `K` or space to play/pause, left/right arrows to seek five seconds, and up/down arrows to change recordings.
+
+Videos stay on your device: the app reads local `File` objects through temporary URLs. There is no upload, live camera access, or connection to your vehicle. Folder selection works best in Chromium browsers (Chrome, Edge) and Electron. Playback depends on your browser's MP4 codec support; unsupported cameras display an error.
+
+### Web and macOS
+
+```sh
+npm run build        # build the static website in dist/
+npm run preview      # preview the build locally
+npm run desktop      # run the Electron app
+npm run desktop:package # build the macOS app and DMG in release/
+```
+
+The static site can be hosted over HTTPS. Distributing the macOS app to other Macs may require Apple signing and notarization, which are not configured here. Electron uses the same local folder picker and does not expose a Node server to the page.
+
+To verify changes, run `npm test`, `npm run lint`, and `npm run build`.

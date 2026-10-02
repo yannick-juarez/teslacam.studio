@@ -152,16 +152,16 @@ export function thumbnailOffset(offset: number, duration: number): number | null
   return Math.min(Math.max(offset, margin), duration - margin)
 }
 
-export function reasonLabel(reason?: string): string {
-  const labels: Record<string, string> = {
-    sentry_aware_object_detection: 'Objet détecté',
-    sentry_aware_accel: 'Mouvement détecté',
-    sentry_aware_user_interaction: 'Interaction détectée',
-    sentry_aware_proximity: 'Proximité détectée',
-    sentry_aware_alarm: 'Alarme déclenchée',
-    user_interaction_dashcam: 'Sauvegarde manuelle',
-    user_interaction_dashcam_icon_tapped: 'Sauvegarde manuelle',
-    honk: 'Klaxon',
+export function reasonLabel(reason?: string, language: 'fr' | 'en' = 'fr'): string {
+  const labels: Record<string, [string, string]> = {
+    sentry_aware_object_detection: ['Objet détecté', 'Object detected'],
+    sentry_aware_accel: ['Mouvement détecté', 'Movement detected'],
+    sentry_aware_user_interaction: ['Interaction détectée', 'Interaction detected'],
+    sentry_aware_proximity: ['Proximité détectée', 'Proximity detected'],
+    sentry_aware_alarm: ['Alarme déclenchée', 'Alarm triggered'],
+    user_interaction_dashcam: ['Sauvegarde manuelle', 'Manual save'],
+    user_interaction_dashcam_icon_tapped: ['Sauvegarde manuelle', 'Manual save'],
+    honk: ['Klaxon', 'Horn'],
   }
-  return reason ? labels[reason] || reason.replaceAll('_', ' ') : 'Enregistrement'
+  return reason ? labels[reason]?.[language === 'en' ? 1 : 0] || reason.replaceAll('_', ' ') : language === 'en' ? 'Recording' : 'Enregistrement'
 }

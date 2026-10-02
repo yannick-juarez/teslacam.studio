@@ -42,6 +42,9 @@
 .topbar-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 5px 17px; margin-top: 5px; color: #75797e; font-size: 11px; }
 .topbar-meta span { display: flex; align-items: center; gap: 5px; }
 .topbar-right { display: flex; align-items: center; flex: none; gap: 16px; }
+.language-switch { display: flex; align-items: center; gap: 2px; flex: none; padding: 2px; border: 1px solid var(--line); border-radius: 4px; }
+.language-switch button { width: 26px; height: 24px; padding: 0; border: 0; border-radius: 3px; background: transparent; color: #777b80; font-size: 10px; font-weight: 700; }
+.language-switch button:hover { color: #202124; }.language-switch button.active { background: #eaeae8; color: #202124; }
 .layout-switch { display: flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 4px; }
 .layout-switch button { display: grid; place-items: center; width: 31px; height: 29px; padding: 0; border: 0; border-radius: 3px; background: transparent; color: #777b80; }
 .layout-switch button:hover { color: #202124; background: #f2f2f1; }.layout-switch button.active { color: #202124; background: #eaeae8; }
@@ -137,6 +140,7 @@
 .theme-dark .explorer-empty-state h2 { color: #f2f2f3; }.theme-dark .explorer-title span, .theme-dark .explorer-empty-state p, .theme-dark .clip-card-body span, .theme-dark .clip-card-body small { color: #a6a9b0; }
 .theme-dark .clip-card { background: #1b1d20; }.theme-dark .clip-card:hover { border-color: #65686e; }.theme-dark .clip-preview { background: #35373c; }
 .theme-dark .layout-switch button { color: #a7abb1; }.theme-dark .layout-switch button:hover { background: #23252a; color: #fff; }.theme-dark .layout-switch button.active { background: #303238; color: #fff; }
+.theme-dark .language-switch button { color: #a7abb1; }.theme-dark .language-switch button:hover { color: #fff; }.theme-dark .language-switch button.active { background: #303238; color: #fff; }
 .theme-dark .date-filter { border-color: #383a40; }
 .theme-dark .date-filter input { color: #f2f2f3; color-scheme: dark; }
 .theme-dark .welcome-icon { background: #1b1d20; border-color: #35373c; color: #d4d6da; }
@@ -175,7 +179,7 @@
 	.welcome-information { padding: 40px 22px 32px; }.welcome-english { padding: 24px 22px 45px; }
 	.brand span { display: none; }.brand { gap: 5px; }.brand strong { font-size: 18px; }.open-button { padding: 0 9px; font-size: 11px; }
 	.topbar { flex-wrap: wrap; align-items: center; min-height: 75px; padding: 10px 12px; gap: 8px; }.topbar-info h1 { font-size: 16px; }.explorer-title span { display: none; }.title-line { gap: 2px 6px; }.topbar-info .eyebrow { font-size: 10px; }.topbar-meta { gap: 3px 8px; font-size: 10px; }
-	.topbar-right { width: 100%; justify-content: space-between; gap: 5px; }.topbar:has(.explorer-title) .topbar-right { width: auto; }.layout-switch { gap: 0; padding: 2px; }.layout-switch button { width: 27px; height: 27px; }.layout-switch button svg { width: 16px; }.setting-toggle { gap: 5px; }.setting-toggle svg { display: none; }
+	.topbar-right { width: 100%; justify-content: space-between; flex-wrap: wrap; gap: 5px; }.topbar:has(.explorer-title) .topbar-right { width: auto; }.back-to-clips { padding-inline: 2px; }.layout-switch { gap: 0; padding: 2px; }.layout-switch button { width: 27px; height: 27px; }.layout-switch button svg { width: 16px; }.setting-toggle { gap: 5px; }.setting-toggle svg { display: none; }
 	.layout-mirrors .camera-tile, .layout-event .camera-tile { top: 7px; width: 38%; }.layout-mirrors .camera-tile.position-left, .layout-event .camera-tile.position-left { left: 7px; }.layout-mirrors .camera-tile.position-right, .layout-event .camera-tile.position-right { right: 7px; }
 	.clips-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }.explorer-empty-state { min-height: 330px; }
 	.camera-grid { gap: 4px; }.video-stage { padding: 4px; }.camera-front, .camera-back { aspect-ratio: 16/9; }.camera-direction { top: 8px; left: 8px; }.event-camera-icon { right: 8px; bottom: 8px; }.direction-front, .direction-back { left: 50%; }.direction-right_repeater, .direction-right_pillar { left: auto; right: 8px; }.playback-panel { padding: 14px 12px; }
