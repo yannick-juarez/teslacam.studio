@@ -112,6 +112,46 @@ export function segmentAt(recording: Recording, time: number): Segment | undefin
   return recording.segments.find((segment) => time >= segment.start && time < segment.start + segment.duration * 1000)
 }
 
+export function eventCamera(recording: Recording): Camera {
+  const available = cameras.filter((camera) => recording.segments.some((segment) => segment.files[camera]))
+  const cameraByCode: Record<string, Camera> = {
+    '0': 'front', '4': 'left_repeater', '5': 'right_repeater',
+  }
+  const requested = recording.metadata?.camera
+  const camera = requested && (cameraByCode[requested] || cameras.find((candidate) => candidate === requested))
+  return (camera && available.includes(camera) ? camera : undefined) ||
+    (available.includes('front') ? 'front' : available[0] || 'front')
+}
+
+export function displayedCameraSource(camera: Camera, files: Segment['files']): Camera {
+  const opposite = camera === 'left_repeater' ? 'right_repeater' : camera === 'right_repeater' ? 'left_repeater' : null
+  return opposite && files[opposite] && files[camera] ? opposite : camera
+}
+
+export function recordingStartTime(recording: Recording): number {
+  const eventTime = Date.parse(recording.metadata?.timestamp || '')
+  if (!Number.isFinite(eventTime) || eventTime < recording.start || eventTime >= recording.end) return recording.start
+  if (segmentAt(recording, eventTime)) return eventTime
+  return recording.segments.find((segment) => segment.start > eventTime)?.start ?? recording.end - 100
+}
+
+export function previewFrame(recording: Recording): { file: File; camera: Camera; sourceCamera: Camera; timestamp: number; offset: number } {
+  const eventTime = Date.parse(recording.metadata?.timestamp || '')
+  const segment = (Number.isFinite(eventTime) && segmentAt(recording, eventTime)) || recording.segments[0]
+  const eventSide = eventCamera(recording)
+  const camera = segment.files[eventSide] ? eventSide : cameras.find((candidate) => segment.files[candidate])!
+  const sourceCamera = displayedCameraSource(camera, segment.files)
+  const offset = Number.isFinite(eventTime) && eventTime >= segment.start && eventTime < segment.start + segment.duration * 1000
+    ? (eventTime - segment.start) / 1000 : 1
+  return { file: segment.files[sourceCamera]!, camera, sourceCamera, timestamp: segment.start + offset * 1000, offset }
+}
+
+export function thumbnailOffset(offset: number, duration: number): number | null {
+  if (!Number.isFinite(offset) || !Number.isFinite(duration) || duration <= 1) return null
+  const margin = Math.min(0.75, duration / 2)
+  return Math.min(Math.max(offset, margin), duration - margin)
+}
+
 export function reasonLabel(reason?: string): string {
   const labels: Record<string, string> = {
     sentry_aware_object_detection: 'Objet détecté',

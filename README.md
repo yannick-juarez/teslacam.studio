@@ -1,6 +1,8 @@
 # TeslaCam Studio
 
-Lecteur local pour les vidéos TeslaCam : événements Sentinelle, clips sauvegardés et clips récents. La bibliothèque regroupe les dates, lit les `event.json`, place les caméras autour de la vue avant et lit les séquences sur une timeline commune. Cliquez sur une caméra pour l'agrandir ; le bouton en haut du lecteur active le plein écran natif.
+Lecteur local pour les vidéos TeslaCam : événements Sentinelle, clips sauvegardés et clips récents. La bibliothèque regroupe les dates, lit les `event.json` et synchronise les caméras sur une timeline commune. La grille des clips est affichée dès l'ouverture ; ses aperçus indiquent la caméra et l'instant représenté via une vidéo locale muette, en pause. Un événement s'ouvre à son horodatage ; les clips sans événement s'ouvrent au début. Trois dispositions sont disponibles après sélection d'un clip : vue avant avec rétroviseurs flottants (par défaut), mosaïque et caméra de l'événement en principal. Si le code de caméra de l'événement est inconnu ou si sa vidéo manque, la vue avant (ou une autre caméra disponible) est affichée. Le bouton **Tous les clips** ramène à la grille. Cliquez sur une caméra pour l'agrandir ; cliquez de nouveau ou appuyez sur `Échap` pour revenir à la disposition.
+
+Raccourcis : `K` ou espace pour lire/mettre en pause, flèches gauche/droite pour reculer/avancer de 5 secondes, flèches haut/bas pour passer à l'enregistrement précédent/suivant, `Échap` pour quitter le focus caméra.
 
 ## Démarrer
 

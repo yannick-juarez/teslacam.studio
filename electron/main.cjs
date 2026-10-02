@@ -8,7 +8,7 @@ function createWindow() {
     minWidth: 800,
     minHeight: 600,
     title: 'TeslaCam Studio',
-    backgroundColor: '#121315',
+    backgroundColor: '#f7f7f6',
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
