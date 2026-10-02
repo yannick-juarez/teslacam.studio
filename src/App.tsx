@@ -114,20 +114,14 @@ function ClipExplorer({ recordings, onOpen, onChooseFolder }: { recordings: Reco
 function WelcomeScreen({ onChooseFolder, loading }: { onChooseFolder: () => void; loading: boolean }) {
   return <div className="welcome-page">
     <section className="welcome-intro" aria-labelledby="welcome-title">
-      <p className="welcome-kicker">Dashcam &amp; mode Sentinelle</p>
-      <h1 id="welcome-title">Visionnez votre clé USB TeslaCam.</h1>
-      <p className="welcome-lead">Parcourez vos clips Sentinelle et Dashcam directement dans votre navigateur. Une façon simple de revoir vos enregistrements lorsque Live Camera n'est pas disponible sur votre véhicule, notamment avec certains systèmes MCU1 ou sans Connectivité Premium.</p>
-      <div className="welcome-action">
-        <div><strong>Ouvrir vos enregistrements</strong><p>Branchez la clé USB de votre Tesla, puis choisissez son dossier TeslaCam.</p></div>
-        <button className="welcome-button" onClick={onChooseFolder} disabled={loading}><FolderOpen size={18} /> {loading ? 'Lecture du dossier…' : 'Sélectionner le dossier TeslaCam'}</button>
-      </div>
+      <span className="welcome-glyph"><FolderOpen size={30} strokeWidth={1.5} /></span>
+      <h2 id="welcome-title">Aucun dossier sélectionné</h2>
+      <p>Branchez la clé USB de votre Tesla et sélectionnez son dossier TeslaCam pour parcourir vos clips.</p>
+      <button className="welcome-button" onClick={onChooseFolder} disabled={loading}><FolderOpen size={18} /> {loading ? 'Lecture du dossier…' : 'Sélectionner le dossier TeslaCam'}</button>
       <p className="welcome-privacy">Les vidéos restent sur votre appareil. Aucune connexion à votre voiture ni transfert vers un serveur.</p>
     </section>
-    <section className="welcome-steps" aria-labelledby="steps-title">
-      <h2 id="steps-title">De la clé USB à vos clips</h2>
-      <ol><li><span>01</span><strong>Branchez la clé</strong><p>Insérez la clé USB utilisée pour TeslaCam dans votre ordinateur.</p></li><li><span>02</span><strong>Choisissez TeslaCam</strong><p>Sélectionnez le dossier TeslaCam, ou directement SavedClips, SentryClips ou RecentClips.</p></li><li><span>03</span><strong>Explorez les événements</strong><p>Retrouvez les dates, les raisons d'enregistrement et les vues caméra synchronisées.</p></li></ol>
-    </section>
     <section className="welcome-information" aria-labelledby="questions-title">
+      <div className="welcome-overview"><h2>Visionnez vos vidéos TeslaCam sur clé USB</h2><p>Retrouvez vos enregistrements Dashcam et mode Sentinelle dans le navigateur, avec les dates, le type d'événement et les caméras synchronisées. Une alternative pour revoir les vidéos lorsque Live Camera à distance n'est pas disponible, par exemple sur certains véhicules MCU1 ou sans Connectivité Premium.</p></div>
       <h2 id="questions-title">Questions fréquentes</h2>
       <div><article><h3>Faut-il la Connectivité Premium ?</h3><p>Non. Ce lecteur ouvre les fichiers déjà enregistrés sur votre clé USB. Il ne nécessite pas l'accès à Live Camera.</p></article><article><h3>Est-ce adapté à une Tesla MCU1 ?</h3><p>Oui, si votre véhicule enregistre des vidéos TeslaCam sur clé USB. Le lecteur ne dépend pas de la visualisation à distance depuis l'application Tesla.</p></article><article><h3>Puis-je voir ma Tesla à distance ?</h3><p>Non. Cette application lit uniquement les clips présents sur la clé branchée à votre ordinateur ; elle n'active pas l'accès aux caméras en direct.</p></article></div>
     </section>
@@ -303,8 +297,13 @@ function App() {
 
   return <div className={`app-shell ${darkMode ? 'theme-dark' : ''} ${recordings.length ? '' : 'is-welcome'}`}>
     <aside className="sidebar">
-      <div className="brand"><img src={appIcon} alt="" width="8" height="8" /><strong>TeslaCam</strong><span>Studio</span></div>
-      {!recordings.length && <label className="setting-toggle">{darkMode ? <Moon size={16} /> : <Sun size={16} />}<span>Mode sombre</span><input type="checkbox" role="switch" checked={darkMode} onChange={(event) => { setDarkMode(event.target.checked); localStorage.setItem('teslacam-theme', event.target.checked ? 'dark' : 'light') }} aria-label="Mode sombre" /><span className="switch-track" aria-hidden="true" /></label>}
+      <div className="brand"><img src={appIcon} alt="" width="16" height="16" /><strong>TeslaCam</strong><span>Studio</span></div>
+      {!recordings.length && <div className="sidebar-onboarding">
+        <div className="source-box"><div className="source-icon"><HardDrive size={19} /></div><div className="source-copy"><span>Dossier</span><strong>Aucun dossier ouvert</strong></div></div>
+        <button className="open-button" onClick={() => inputRef.current?.click()} disabled={loading}><FolderOpen size={18} /> {loading ? 'Lecture du dossier…' : 'Ouvrir un dossier'}</button>
+        <h2>Pour commencer</h2>
+        <ol><li><span>01</span><div><strong>Branchez la clé USB</strong><p>Insérez la clé utilisée pour TeslaCam dans votre ordinateur.</p></div></li><li><span>02</span><div><strong>Choisissez TeslaCam</strong><p>Sélectionnez le dossier TeslaCam, ou un dossier de clips.</p></div></li><li><span>03</span><div><strong>Parcourez les vidéos</strong><p>Retrouvez les événements et les vues caméra synchronisées.</p></div></li></ol>
+      </div>}
       {!!recordings.length && <>
       <div className="source-box"><div className="source-icon"><HardDrive size={19} /></div><div className="source-copy"><span>Dossier</span><strong title={sourceName}>{sourceName}</strong></div><span className={`source-dot ${recordings.length ? 'connected' : ''}`} /></div>
       <button className="open-button" onClick={() => inputRef.current?.click()} disabled={loading}><FolderOpen size={18} /> {loading ? 'Lecture du dossier…' : recordings.length ? 'Changer de dossier' : 'Ouvrir un dossier'}</button>
@@ -327,14 +326,12 @@ function App() {
     </aside>
 
     <main className="main-area">
-      {!!recordings.length && <>
       <header className="topbar"><div className="topbar-info">{view === 'explorer' ? <div className="explorer-title"><h1>Explorer les clips</h1>{filtered.length > 0 && <span>{filtered.length} enregistrement{filtered.length > 1 ? 's' : ''}</span>}</div> : selected ? <><div className="title-line"><h1>{selected.category === 'RecentClips' ? 'Enregistrements récents' : reasonLabel(selected.metadata?.reason)}</h1><span className="eyebrow"><span className={`tiny-status ${selected.category}`} /> {categoryNames[selected.category]} · {shortDateFormat.format(selected.start)}</span></div><div className="topbar-meta"><span><Clock3 size={14} /> {timeFormat.format(selected.start)} – {timeFormat.format(selected.end)}</span>{selected.metadata?.city && <span><MapPin size={14} /> {selected.metadata.city}</span>}</div></> : <h1>Lecteur</h1>}</div><div className="topbar-right">
         {view === 'explorer' && selected && <button className="back-to-player" onClick={() => setView('player')}><ChevronLeft size={16} /> Lecteur</button>}
         {view === 'player' && selected && <button className="back-to-clips" onClick={() => { setPlaying(false); setFocus(null); setView('explorer') }}><ChevronLeft size={16} /> Tous les clips</button>}
         {view === 'player' && selected && <div className="layout-switch" role="group" aria-label="Disposition des caméras"><button className={layout === 'grid' ? 'active' : ''} onClick={() => { setFocus(null); setLayout('grid') }} title="Mosaïque" aria-label="Mosaïque" aria-pressed={layout === 'grid'}><Grid2X2 size={18} /></button><button className={layout === 'mirrors' ? 'active' : ''} onClick={() => { setFocus(null); setLayout('mirrors') }} title="Avant et rétroviseurs" aria-label="Avant et rétroviseurs" aria-pressed={layout === 'mirrors'}><PictureInPicture2 size={18} /></button><button className={layout === 'event' ? 'active' : ''} onClick={() => { setFocus(null); setLayout('event') }} title="Caméra de l’événement" aria-label="Caméra de l’événement" aria-pressed={layout === 'event'}><ScanEye size={18} /></button></div>}
         <label className="setting-toggle">{darkMode ? <Moon size={16} /> : <Sun size={16} />}<span>Mode sombre</span><input type="checkbox" role="switch" checked={darkMode} onChange={(event) => { setDarkMode(event.target.checked); localStorage.setItem('teslacam-theme', event.target.checked ? 'dark' : 'light') }} aria-label="Mode sombre" /><span className="switch-track" aria-hidden="true" /></label>
       </div></header>
-      </>}
       {message && <div className="notice" role="alert">{message}<button onClick={() => setMessage('')} aria-label="Fermer"><X size={16} /></button></div>}
       <div className="workspace">
         {!recordings.length ? <WelcomeScreen onChooseFolder={() => inputRef.current?.click()} loading={loading} /> : view === 'explorer' ? <ClipExplorer recordings={filtered} onOpen={selectRecording} onChooseFolder={() => inputRef.current?.click()} /> : <section className="viewer-panel">
